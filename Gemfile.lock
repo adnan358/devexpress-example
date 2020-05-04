@@ -22,8 +22,6 @@ GEM
       activesupport (= 3.2.3)
       arel (~> 3.0.2)
       tzinfo (~> 0.3.29)
-    activerecord-mysql2-adapter (0.0.3)
-      mysql2
     activeresource (3.2.3)
       activemodel (= 3.2.3)
       activesupport (= 3.2.3)
@@ -42,6 +40,8 @@ GEM
     concurrent-ruby (1.1.6)
     erubis (2.7.0)
     execjs (2.7.0)
+    faker (1.9.6)
+      i18n (>= 0.7)
     ffi (1.12.2)
     hike (1.2.3)
     i18n (0.9.5)
@@ -113,8 +113,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  activerecord-mysql2-adapter
   coffee-rails (~> 3.2.1)
+  faker (~> 1.6, >= 1.6.6)
   jquery-rails
   mysql2 (~> 0.3.10)
   rails (= 3.2.3)

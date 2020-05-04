@@ -70,20 +70,12 @@ $(function(){
         },
         columns: [
             "FirstName",
-            "LastName", {
+            "LastName",
+            "Age",{
                 dataField: "Position",
                 width: 170
             }, {
-                dataField: "StateID",
-                caption: "State",
-                width: 125,
-                lookup: {
-                    dataSource: states,
-                    displayExpr: "Name",
-                    valueExpr: "ID"
-                }
-            }, {
-                dataField: "BirthDate",
+                dataField: "StartingWork",
                 dataType: "date"
             }, {
                 dataField: "Salary"
@@ -107,7 +99,7 @@ $(function(){
                 summaryType: "count",
                 displayFormat: "{0} orders",
             }, {
-                column: "State",
+                column: "Position",
                 summaryType: "count",
                 displayFormat: "{0} orders",
             }],
@@ -156,8 +148,8 @@ $(function(){
                     allowSearch: true
                 }
             }, {
-                dataField: "BirthDate",
-                dataType: "BirthDate",
+                dataField: "StartingWork",
+                dataType: "StartingWork",
                 area: "column"
             }, {
                 caption: "Salary",
