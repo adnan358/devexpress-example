@@ -1,0 +1,45 @@
+<%= form_for(@data_table) do |f| %>
+  <% if @data_table.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@data_table.errors.count, "error") %> prohibited this data_table from being saved:</h2>
+
+      <ul>
+      <% @data_table.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :id %><br />
+    <%= f.number_field :id %>
+  </div>
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+  <div class="field">
+    <%= f.label :age %><br />
+    <%= f.number_field :age %>
+  </div>
+  <div class="field">
+    <%= f.label :position %><br />
+    <%= f.text_field :position %>
+  </div>
+  <div class="field">
+    <%= f.label :starting_work %><br />
+    <%= f.date_select :starting_work %>
+  </div>
+  <div class="field">
+    <%= f.label :salary %><br />
+    <%= f.number_field :salary %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

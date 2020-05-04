@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>DemoTable</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" %>
+  <script>window.jQuery || document.write(decodeURIComponent('%3Cscript src="js/jquery.min.js"%3E%3C/script%3E'))</script>
+  <%= stylesheet_link_tag    "https://cdn3.devexpress.com/jslib/19.2.7/css/dx.common.css", :media => "all" %>
+  <%= stylesheet_link_tag    "https://cdn3.devexpress.com/jslib/19.2.7/css/dx.light.css", :media => "all" %>
+  <%= javascript_include_tag "https://cdn3.devexpress.com/jslib/19.2.7/js/dx.all.js" %>
+  <%= javascript_include_tag "data.js" %>
+  <%= stylesheet_link_tag    "demo_table.css", :media => "all" %>
+
+  <%= csrf_meta_tags %>
+</head>
+<body class="dx-viewport">
+
+<%= yield %>
+
+<%= javascript_include_tag "demo_table.js" %>
+<script>
+    var myVar = setInterval(myTimer, 2000);
+
+    function myTimer() {
+        document.getElementById("pivot-mode-radio").click();
+        clearInterval(myVar);
+    }
+</script>
+</body>
+</html>

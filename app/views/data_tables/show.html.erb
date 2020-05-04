@@ -1,0 +1,40 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Id:</b>
+  <%= @data_table.id %>
+</p>
+
+<p>
+  <b>First name:</b>
+  <%= @data_table.first_name %>
+</p>
+
+<p>
+  <b>Last name:</b>
+  <%= @data_table.last_name %>
+</p>
+
+<p>
+  <b>Age:</b>
+  <%= @data_table.age %>
+</p>
+
+<p>
+  <b>Position:</b>
+  <%= @data_table.position %>
+</p>
+
+<p>
+  <b>Starting work:</b>
+  <%= @data_table.starting_work %>
+</p>
+
+<p>
+  <b>Salary:</b>
+  <%= @data_table.salary %>
+</p>
+
+
+<%= link_to 'Edit', edit_data_table_path(@data_table) %> |
+<%= link_to 'Back', data_tables_path %>

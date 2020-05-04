@@ -1,0 +1,62 @@
+
+<div id="content" style="display: flex;">
+  <div class="demo-container" style="width:80%;">
+    <div id="data-grid-demo">
+      <div id="gridDeleteSelected"></div>
+      <div id="gridContainer"></div>
+    </div>
+    <div id="sales" style="margin-top: 91px;"></div>
+  </div>
+  <div style="width: 20%;margin-top: 45px;">
+    <div style="border: 1px solid #dddddd;height: calc(100% - 58px);margin-top:46px;background-color: #ffffff;">
+      <div id="pivot-mode-radio" style="margin: 10px;">
+
+      </div>
+      <div class="container">
+        <div id="sales-fieldchooser" style="width: 100% !important; height: 100% !important;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<h1>Listing data_tables</h1>
+
+<table>
+  <tr>
+    <th>Id</th>
+    <th>First name</th>
+    <th>Last name</th>
+    <th>Age</th>
+    <th>Position</th>
+    <th>Starting work</th>
+    <th>Salary</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @data_tables.each do |data_table| %>
+  <tr>
+    <td><%= data_table.id %></td>
+    <td><%= data_table.first_name %></td>
+    <td><%= data_table.last_name %></td>
+    <td><%= data_table.age %></td>
+    <td><%= data_table.position %></td>
+    <td><%= data_table.starting_work %></td>
+    <td><%= data_table.salary %></td>
+    <td><%= link_to 'Show', data_table %></td>
+    <td><%= link_to 'Edit', edit_data_table_path(data_table) %></td>
+    <td><%= link_to 'Destroy', data_table, confirm: 'Are you sure?', method: :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Data table', new_data_table_path %>

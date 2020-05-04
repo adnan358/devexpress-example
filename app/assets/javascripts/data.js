@@ -1,0 +1,407 @@
+var employees = [{
+    "ID": 1,
+    "FirstName": "John",
+    "LastName": "Heart",
+    "Position": "CEO",
+    "BirthDate": "1964/03/16",
+    "StateID": 5,
+    "Salary": 6300
+}, {
+    "ID": 2,
+    "FirstName": "Olivia",
+    "LastName": "Peyton",
+    "Position": "Sales Assistant",
+    "BirthDate": "1981/06/03",
+    "StateID": 5,
+    "Salary": 3300
+}, {
+    "ID": 3,
+    "FirstName": "Robert",
+    "LastName": "Reagan",
+    "Position": "CMO",
+    "BirthDate": "1974/09/07",
+    "StateID": 4,
+    "Salary": 5300
+}, {
+    "ID": 4,
+    "FirstName": "Greta",
+    "LastName": "Sims",
+    "Position": "HR Manager",
+    "BirthDate": "1977/11/22",
+    "StateID": 11,
+    "Salary": 4300
+}, {
+    "ID": 5,
+    "FirstName": "Brett",
+    "LastName": "Wade",
+    "Position": "IT Manager",
+    "BirthDate": "1968/12/01",
+    "StateID": 13,
+    "Salary": 6200
+}, {
+    "ID": 6,
+    "FirstName": "Sandra",
+    "LastName": "Johnson",
+    "Position": "Controller",
+    "BirthDate": "1974/11/15",
+    "StateID": 44,
+    "Salary": 6300
+}, {
+    "ID": 7,
+    "FirstName": "Kevin",
+    "LastName": "Carter",
+    "Position": "Shipping Manager",
+    "BirthDate": "1978/01/09",
+    "StateID": 5,
+    "Salary": 6300
+}, {
+    "ID": 8,
+    "FirstName": "Cynthia",
+    "LastName": "Stanwick",
+    "Position": "HR Assistant",
+    "BirthDate": "1985/06/05",
+    "StateID": 4,
+    "Salary": 1100
+}, {
+    "ID": 9,
+    "FirstName": "Kent",
+    "LastName": "Samuelson",
+    "Position": "Ombudsman",
+    "BirthDate": "1972/09/11",
+    "StateID": 26,
+    "Salary": 6300
+}, {
+    "ID": 10,
+    "FirstName": "Taylor",
+    "LastName": "Riley",
+    "Position": "Network Admin",
+    "BirthDate": "1982/08/14",
+    "StateID": 5,
+    "Salary": 6300
+}, {
+    "ID": 11,
+    "FirstName": "Sam",
+    "LastName": "Hill",
+    "Position": "Sales Assistant",
+    "BirthDate": "1984/02/17",
+    "StateID": 11,
+    "Salary": 1100
+}, {
+    "ID": 12,
+    "FirstName": "Kelly",
+    "LastName": "Rodriguez",
+    "Position": "Support Assistant",
+    "BirthDate": "1988/05/11",
+    "StateID": 5,
+    "Salary": 1100
+}, {
+    "ID": 13,
+    "FirstName": "Natalie",
+    "LastName": "Maguirre",
+    "Position": "Trainer",
+    "BirthDate": "1977/10/07",
+    "StateID": 29,
+    "Salary": 4300
+}, {
+    "ID": 14,
+    "FirstName": "Natalie",
+    "LastName": "Maguirre",
+    "Position": "Trainer",
+    "BirthDate": "1977/10/07",
+    "StateID": 29,
+    "Salary": 4300
+}, {
+    "ID": 15,
+    "FirstName": "Olivia",
+    "LastName": "Peyton",
+    "Position": "Sales Assistant",
+    "BirthDate": "1981/06/03",
+    "StateID": 5,
+    "Salary": 4300
+}, {
+    "ID": 16,
+    "FirstName": "Robert",
+    "LastName": "Reagan",
+    "Position": "CMO",
+    "BirthDate": "1974/09/07",
+    "StateID": 4,
+    "Salary": 4300
+}, {
+    "ID": 17,
+    "FirstName": "Greta",
+    "LastName": "Sims",
+    "Position": "HR Manager",
+    "BirthDate": "1977/11/22",
+    "StateID": 11,
+    "Salary": 4300
+}, {
+    "ID": 18,
+    "FirstName": "Brett",
+    "LastName": "Wade",
+    "Position": "IT Manager",
+    "BirthDate": "1968/12/01",
+    "StateID": 13,
+    "Salary": 4300
+}, {
+    "ID": 19,
+    "FirstName": "Sandra",
+    "LastName": "Johnson",
+    "Position": "Controller",
+    "BirthDate": "1974/11/15",
+    "StateID": 44,
+    "Salary": 4300
+}, {
+    "ID": 20,
+    "FirstName": "Kevin",
+    "LastName": "Carter",
+    "Position": "Shipping Manager",
+    "BirthDate": "1978/01/09",
+    "StateID": 5,
+    "Salary": 4300
+}, {
+    "ID": 21,
+    "FirstName": "Cynthia",
+    "LastName": "Stanwick",
+    "Position": "HR Assistant",
+    "BirthDate": "1985/06/05",
+    "StateID": 4,
+    "Salary": 4300
+}, {
+    "ID": 22,
+    "FirstName": "Kent",
+    "LastName": "Samuelson",
+    "Position": "Ombudsman",
+    "BirthDate": "1972/09/11",
+    "StateID": 26,
+    "Salary": 4300
+}, {
+    "ID": 23,
+    "FirstName": "Taylor",
+    "LastName": "Riley",
+    "Position": "Network Admin",
+    "BirthDate": "1982/08/14",
+    "StateID": 5,
+    "Salary": 4300
+}, {
+    "ID": 24,
+    "FirstName": "Sam",
+    "LastName": "Hill",
+    "Position": "Sales Assistant",
+    "BirthDate": "1984/02/17",
+    "StateID": 11,
+    "Salary": 4300
+}, {
+    "ID": 25,
+    "FirstName": "Kelly",
+    "LastName": "Rodriguez",
+    "Position": "Support Assistant",
+    "BirthDate": "1988/05/11",
+    "StateID": 5,
+    "Salary": 4300
+}, {
+    "ID": 26,
+    "FirstName": "Natalie",
+    "LastName": "Maguirre",
+    "Position": "Trainer",
+    "BirthDate": "1977/10/07",
+    "StateID": 29,
+    "Salary": 4300
+}, {
+    "ID": 27,
+    "FirstName": "Natalie",
+    "LastName": "Maguirre",
+    "Position": "Trainer",
+    "BirthDate": "1977/10/07",
+    "StateID": 29,
+    "Salary": 4300
+}, {
+    "ID": 28,
+    "FirstName": "Olivia",
+    "LastName": "Peyton",
+    "Position": "Sales Assistant",
+    "BirthDate": "1981/06/03",
+    "StateID": 5,
+    "Salary": 4300
+}, {
+    "ID": 29,
+    "FirstName": "Robert",
+    "LastName": "Reagan",
+    "Position": "CMO",
+    "BirthDate": "1974/09/07",
+    "StateID": 4,
+    "Salary": 4300
+}, {
+    "ID": 30,
+    "FirstName": "Greta",
+    "LastName": "Sims",
+    "Position": "HR Manager",
+    "BirthDate": "1977/11/22",
+    "StateID": 11,
+    "Salary": 4300
+}];
+
+var states = [{
+    "ID": 1,
+    "Name": "Alabama"
+}, {
+    "ID": 2,
+    "Name": "Alaska"
+}, {
+    "ID": 3,
+    "Name": "Arizona"
+}, {
+    "ID": 4,
+    "Name": "Arkansas"
+}, {
+    "ID": 5,
+    "Name": "California"
+}, {
+    "ID": 6,
+    "Name": "Colorado"
+}, {
+    "ID": 7,
+    "Name": "Connecticut"
+}, {
+    "ID": 8,
+    "Name": "Delaware"
+}, {
+    "ID": 9,
+    "Name": "District of Columbia"
+}, {
+    "ID": 10,
+    "Name": "Florida"
+}, {
+    "ID": 11,
+    "Name": "Georgia"
+}, {
+    "ID": 12,
+    "Name": "Hawaii"
+}, {
+    "ID": 13,
+    "Name": "Idaho"
+}, {
+    "ID": 14,
+    "Name": "Illinois"
+}, {
+    "ID": 15,
+    "Name": "Indiana"
+}, {
+    "ID": 16,
+    "Name": "Iowa"
+}, {
+    "ID": 17,
+    "Name": "Kansas"
+}, {
+    "ID": 18,
+    "Name": "Kentucky"
+}, {
+    "ID": 19,
+    "Name": "Louisiana"
+}, {
+    "ID": 20,
+    "Name": "Maine"
+}, {
+    "ID": 21,
+    "Name": "Maryland"
+}, {
+    "ID": 22,
+    "Name": "Massachusetts"
+}, {
+    "ID": 23,
+    "Name": "Michigan"
+}, {
+    "ID": 24,
+    "Name": "Minnesota"
+}, {
+    "ID": 25,
+    "Name": "Mississippi"
+}, {
+    "ID": 26,
+    "Name": "Missouri"
+}, {
+    "ID": 27,
+    "Name": "Montana"
+}, {
+    "ID": 28,
+    "Name": "Nebraska"
+}, {
+    "ID": 29,
+    "Name": "Nevada"
+}, {
+    "ID": 30,
+    "Name": "New Hampshire"
+}, {
+    "ID": 31,
+    "Name": "New Jersey"
+}, {
+    "ID": 32,
+    "Name": "New Mexico"
+}, {
+    "ID": 33,
+    "Name": "New York"
+}, {
+    "ID": 34,
+    "Name": "North Carolina"
+}, {
+    "ID": 35,
+    "Name": "Ohio"
+}, {
+    "ID": 36,
+    "Name": "Oklahoma"
+}, {
+    "ID": 37,
+    "Name": "Oregon"
+}, {
+    "ID": 38,
+    "Name": "Pennsylvania"
+}, {
+    "ID": 39,
+    "Name": "Rhode Island"
+}, {
+    "ID": 40,
+    "Name": "South Carolina"
+}, {
+    "ID": 41,
+    "Name": "South Dakota"
+}, {
+    "ID": 42,
+    "Name": "Tennessee"
+}, {
+    "ID": 43,
+    "Name": "Texas"
+}, {
+    "ID": 44,
+    "Name": "Utah"
+}, {
+    "ID": 45,
+    "Name": "Vermont"
+}, {
+    "ID": 46,
+    "Name": "Virginia"
+}, {
+    "ID": 47,
+    "Name": "Washington"
+}, {
+    "ID": 48,
+    "Name": "West Virginia"
+}, {
+    "ID": 49,
+    "Name": "Wisconsin"
+}, {
+    "ID": 50,
+    "Name": "Wyoming"
+}, {
+    "ID": 51,
+    "Name": "North Dakota"
+}];
+
+var layouts = [{
+    key: 0,
+    name: "Layout0"
+}, {
+    key: 1,
+    name: "Layout1"
+}, {
+    key: 2,
+    name: "Layout2"
+}];

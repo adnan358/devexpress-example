@@ -1,0 +1,82 @@
+#data-grid-demo {
+    min-height: 700px;
+}
+
+#gridContainer {
+    padding-top: 45px;
+}
+
+#gridDeleteSelected {
+    position: absolute;
+    z-index: 1;
+    right: 0;
+    margin: 1px;
+    top: 0;
+}
+
+#gridDeleteSelected .dx-button-text {
+    line-height: 0;
+}
+
+body{
+    background-color: #f8f8f8 !important;
+}
+
+
+/*-------------- */
+
+
+
+.container {
+    position: relative;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.bottom-bar {
+    width: 396px;
+    text-align: right;
+    margin-top: 5px;
+}
+
+#applyButton {
+    margin-right: 10px;
+}
+
+.options {
+    padding: 20px;
+    background-color: rgba(191, 191, 191, 0.15);
+    position: absolute;
+    top: 29px;
+    bottom: 3px;
+    left: 420px;
+    width: 180px;
+}
+
+.caption {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.option {
+    margin-top: 10px;
+}
+
+.option-editor {
+    margin-top: 5px;
+}
+.dx-pivotgridfieldchooser-container{
+    display: grid !important;
+}
+.dx-pivotgridfieldchooser-container .dx-col{
+    width: 100% !important;
+}
+
+.dx-pivotgridfieldchooser-container > .dx-col:nth-of-type(1) {
+    height: 200px !important;
+}
+.dx-pivotgridfieldchooser-container > .dx-col:nth-of-type(2) {
+    height: 480px !important;
+}
+
+.dx-pivotgrid-container > table:nth-of-type(1){max-width: 1127px !important; width: 800px !important;}
