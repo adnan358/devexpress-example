@@ -1,8 +1,23 @@
 $(function(){
-    var employeesStore = new DevExpress.data.ArrayStore({
-        key: "ID",
+
+    var store = {
+        store: {
+            type: "odata",
+                // Burası bizim ajax linkimiz olcak
+                url: "https://jsonplaceholder.typicode.com/users",
+                beforeSend: function(request) {
+                // Buradan url'ye parametre ekliyoruz
+                // request.params.startDate = "2018-05-10";
+                // request.params.endDate = "2018-05-15";
+            },
+            key: 'id'
+        }
+    }
+
+    /* var employeesStore = new DevExpress.data.ArrayStore({
+        key: "id",
         data: employees
-    });
+    }); */
 
     /*var deleteButton = $("#gridDeleteSelected").dxButton({
         text: "Delete Selected Records",
@@ -17,8 +32,8 @@ $(function(){
     }).dxButton("instance");*/
 
     var dataGrid = $("#gridContainer").dxDataGrid({
-        dataSource: employeesStore,
-        keyExpr: "ID",
+        dataSource: store,
+        keyExpr: "id",
         height: 850,
         columnsAutoWidth: true,
         allowColumnReordering: true,
@@ -40,7 +55,14 @@ $(function(){
             mode: 'infinite'
         },
         paging: {
-            enabled: false
+            enabled: true,
+            pageSize: 5,
+            pageIndex: 1
+        },
+        pager: {
+            showPageSizeSelector: true,
+            allowedPageSizes: [2, 5, 10],
+            showNavigationButtons: true
         },
         editing: {
             mode: "cell",
@@ -52,7 +74,8 @@ $(function(){
         groupPanel: {
             visible: true
         },
-        rowDragging: {
+        // Drag bırak işimiz yok
+        /* rowDragging: {
             allowReordering: true,
             onReorder: function(e) {
                 var visibleRows = e.component.getVisibleRows(),
@@ -64,42 +87,45 @@ $(function(){
 
                 e.component.refresh();
             }
-        },
+        }, */
         onSelectionChanged: function(e) {
             e.component.refresh(true);
         },
         columns: [
-            "FirstName",
-            "LastName",
-            "Age",{
-                dataField: "Position",
+            "name",
+            "username",
+            "email",
+            {
+                dataField: "position",
                 width: 170
-            }, {
-                dataField: "StartingWork",
+            },
+            {
+                dataField: "starting_work",
                 dataType: "date"
-            }, {
-                dataField: "Salary"
+            },
+            {
+                dataField: "salary"
             }
         ],
         summary: {
             totalItems: [{
-                column: "FirstName",
-                summaryType: "count",
-                displayFormat: "{0} rows"
-            },
+                    column: "first_name",
+                    summaryType: "count",
+                    displayFormat: "{0} rows"
+                },
                 {
                     name: "SelectedRowsSummary",
-                    showInColumn: "Salary",
-                    displayFormat: "Sum: {0}",
+                    showInColumn: "salary",
+                    displayFormat: "Sum {0}",
                     valueFormat: "currency",
                     summaryType: "custom"
                 }],
             groupItems: [{
-                column: "FirstName",
+                column: "first_name",
                 summaryType: "count",
                 displayFormat: "{0} orders",
             }, {
-                column: "Position",
+                column: "position",
                 summaryType: "count",
                 displayFormat: "{0} orders",
             }],
@@ -138,6 +164,7 @@ $(function(){
             allowFieldDragging: true,
             visible: true
         },
+
         dataSource: {
             fields: [{
                 caption: "Position",
@@ -159,7 +186,7 @@ $(function(){
                 format: "currency",
                 area: "data"
             }],
-            store: employees
+            store: store
         },
         fieldChooser: {
             enabled: false

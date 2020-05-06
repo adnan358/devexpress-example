@@ -37,3 +37,6 @@ gem 'faker', '~> 1.6', '>= 1.6.6'
 
 # To use debugger
 # gem 'debugger'
+
+gem 'ruby-debug-ide'
+gem 'debase'
