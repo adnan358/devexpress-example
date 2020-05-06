@@ -8,7 +8,7 @@ class DataTablesController < ApplicationController
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @table_hash }
+      format.json { render json: @data_table }
     end
   end
 
@@ -96,6 +96,10 @@ class DataTablesController < ApplicationController
          "StartingWork" => "#{d.starting_work}",
          "Salary" => d.salary
      })
+    end
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @table_hash }
     end
   end
 

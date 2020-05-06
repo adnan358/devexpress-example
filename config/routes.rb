@@ -1,6 +1,7 @@
 DemoTable::Application.routes.draw do
-  resources :data_tables
-  
+  resources :data_tables do
+    get :prepare_data, on: :collection
+  end
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

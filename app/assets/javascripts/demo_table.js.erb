@@ -1,6 +1,6 @@
 var employees;
 window.onload = function loadHrJson() {
-    $.getJSON("data.json", function(data) {  //get translations
+    $.getJSON("/data_tables/prepare_data", function(data) {  //get translations
 
         if(data == null){
             loadHrJson();
