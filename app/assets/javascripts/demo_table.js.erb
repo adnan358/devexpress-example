@@ -1,6 +1,6 @@
 $(function(){
     var employeesStore = new DevExpress.data.ArrayStore({
-        key: "ID",
+        key: "id",
         data: employees
     });
 
@@ -18,7 +18,7 @@ $(function(){
 
     var dataGrid = $("#gridContainer").dxDataGrid({
         dataSource: employeesStore,
-        keyExpr: "ID",
+        keyExpr: "id",
         height: 850,
         columnsAutoWidth: true,
         allowColumnReordering: true,
@@ -109,7 +109,7 @@ $(function(){
                         options.totalValue = 0;
                     }
                     if (options.summaryProcess === "calculate") {
-                        if (options.component.isRowSelected(options.value.ID)) {
+                        if (options.component.isRowSelected(options.value.id)) {
                             options.totalValue = options.totalValue + options.value.Salary;
                         }
                     }

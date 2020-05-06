@@ -1,12 +1,14 @@
 class DataTablesController < ApplicationController
   # GET /data_tables
   # GET /data_tables.json
+  before_filter :prepare_data
+  require 'json'
   def index
     @data_tables = DataTable.all
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @data_tables }
+      format.json { render json: @table_hash }
     end
   end
 
@@ -80,4 +82,21 @@ class DataTablesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def prepare_data
+    data_table = DataTable.all
+    @table_hash = []
+    data_table.each do |d|
+      @table_hash.push({
+         "id" => d.id,
+         "FirstName" => "#{d.first_name}",
+         "LastName" => "#{d.last_name}",
+         "Age" => d.age,
+         "Position" => "#{d.position}",
+         "StartingWork" => "#{d.starting_work}",
+         "Salary" => d.salary
+     })
+    end
+  end
+
 end
