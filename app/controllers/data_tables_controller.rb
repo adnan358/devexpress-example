@@ -2,7 +2,7 @@ class DataTablesController < ApplicationController
   # GET /data_tables
   # GET /data_tables.json
   before_filter :prepare_data
-  require 'json'
+
   def index
     @data_tables = DataTable.all
 

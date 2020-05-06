@@ -1,25 +1,36 @@
-$(function(){
+var employees;
+window.onload = function loadHrJson() {
+    $.getJSON("data.json", function(data) {  //get translations
+
+        if(data == null){
+            loadHrJson();
+        }
+        else{
+            console.log(data);
+            employees = data;
+            runTable();
+        }
+    });
+};
+function runTable(){
+
     var employeesStore = new DevExpress.data.ArrayStore({
         key: "id",
         data: employees
     });
 
-    /*var deleteButton = $("#gridDeleteSelected").dxButton({
-        text: "Delete Selected Records",
-        height: 34,
-        disabled: true,
-        onClick: function () {
-            $.each(dataGrid.getSelectedRowKeys(), function() {
-                employeesStore.remove(this);
-            });
-            dataGrid.refresh();
-        }
-    }).dxButton("instance");*/
-
     var dataGrid = $("#gridContainer").dxDataGrid({
         dataSource: employeesStore,
         keyExpr: "id",
         height: 850,
+        paging: {
+            pageSize: 20
+        },
+        pager: {
+            showPageSizeSelector: true,
+            allowedPageSizes: [10, 20, 50],
+            showInfo: true
+        },
         columnsAutoWidth: true,
         allowColumnReordering: true,
         showBorders: true,
@@ -35,12 +46,6 @@ $(function(){
             visible: true,
             width: 240,
             placeholder: "Search..."
-        },
-        scrolling: {
-            mode: 'infinite'
-        },
-        paging: {
-            enabled: false
         },
         editing: {
             mode: "cell",
@@ -149,11 +154,13 @@ $(function(){
                 }
             }, {
                 dataField: "StartingWork",
+                width: 100,
                 dataType: "StartingWork",
                 area: "column"
             }, {
                 caption: "Salary",
                 dataField: "Salary",
+                width: 100,
                 dataType: "number",
                 summaryType: "sum",
                 format: "currency",
@@ -278,4 +285,6 @@ $(function(){
         layout: 1
     }).dxPivotGridFieldChooser("instance");
 
-});
+
+
+};
