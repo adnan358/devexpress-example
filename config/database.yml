@@ -10,4 +10,5 @@ development:
   pool: 5
   username: root
   password: 123456
+  host: <%= ENV['DATABASE_HOST'].present? ? ENV['DATABASE_HOST'] : 'localhost' %>
   #socket: /tmp/mysql.sock
