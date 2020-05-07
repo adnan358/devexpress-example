@@ -1,30 +1,54 @@
-var employees;
-window.onload = function loadHrJson() {
-    $.getJSON("/data_tables/prepare_data", function(data) {  //get translations
+  function isNotEmpty(value) {
+      return value !== undefined && value !== null && value !== "";
+  }
+  var store = new DevExpress.data.CustomStore({
+      key: "id",
+      load: function (loadOptions) {
+          var deferred = $.Deferred(),
+              args = {};
+          [
+              "skip",
+              "take",
+              "requireTotalCount",
+              "requireGroupCount",
+              "sort",
+              "filter",
+              "totalSummary",
+              "group",
+              "groupSummary"
+          ].forEach(function(i) {
+              if (i in loadOptions && isNotEmpty(loadOptions[i]))
+                  args[i] = JSON.stringify(loadOptions[i]);
+          });
 
-        if(data == null){
-            loadHrJson();
-        }
-        else{
-            console.log(data);
-            employees = data;
-            runTable();
-        }
-    });
-};
-function runTable(){
+          $.ajax({
+              url: "/data_tables/prepare_data",
+              dataType: "json",
+              data: args,
+              success: function(result) {
+                  deferred.resolve(result.data, {
+                      totalCount: result.totalCount,
+                      summary: result.summary,
+                      groupCount: result.groupCount
+                  });
+              },
+              error: function() {
+                  deferred.reject("Data Loading Error");
+              },
+              timeout: 5000
+          });
 
-    var employeesStore = new DevExpress.data.ArrayStore({
-        key: "id",
-        data: employees
-    });
+          return deferred.promise();
+      }
+  });
 
     var dataGrid = $("#gridContainer").dxDataGrid({
-        dataSource: employeesStore,
+        dataSource: store,
+        remoteOperations: true,
         keyExpr: "id",
         height: 850,
         paging: {
-            pageSize: 20
+            pageSize: 10
         },
         pager: {
             showPageSizeSelector: true,
@@ -57,6 +81,7 @@ function runTable(){
         groupPanel: {
             visible: true
         },
+        /*
         rowDragging: {
             allowReordering: true,
             onReorder: function(e) {
@@ -69,11 +94,12 @@ function runTable(){
 
                 e.component.refresh();
             }
-        },
+        }, */
         onSelectionChanged: function(e) {
             e.component.refresh(true);
         },
         columns: [
+            "id",
             "FirstName",
             "LastName",
             "Age",{
@@ -166,7 +192,7 @@ function runTable(){
                 format: "currency",
                 area: "data"
             }],
-            store: employees
+            store: store
         },
         fieldChooser: {
             enabled: false
@@ -284,7 +310,3 @@ function runTable(){
         height: 685,
         layout: 1
     }).dxPivotGridFieldChooser("instance");
-
-
-
-};

@@ -84,11 +84,14 @@ class DataTablesController < ApplicationController
   end
 
   def prepare_data
-    @search = DataTable.ransack(id_in: 3..5)
-    data_table = @search.result
-    @table_hash = []
+    @table_hash = {}
+
+    @search = DataTable.ransack
+    data_table = @search.result.paginate(page: params[:skip].to_i + 1, per_page: params[:take])
+
+    hash = []
     data_table.each do |d|
-      @table_hash.push({
+      hash.push({
          "id" => d.id,
          "FirstName" => "#{d.first_name}",
          "LastName" => "#{d.last_name}",
@@ -98,6 +101,10 @@ class DataTablesController < ApplicationController
          "Salary" => d.salary
      })
     end
+
+    @table_hash[:data] = hash
+    @table_hash[:totalCount] = DataTable.count if params[:requireTotalCount].present?
+
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @table_hash }

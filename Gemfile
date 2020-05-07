@@ -24,9 +24,12 @@ end
 gem 'jquery-rails'
 gem 'faker', '~> 1.6', '>= 1.6.6'
 
+# Paginate
+gem 'will_paginate'
+
 # Docker Debugger
-gem 'ruby-debug-ide' if ENV['IS_DOCKER'].present?
-gem 'debase' if ENV['IS_DOCKER'].present?
+gem 'ruby-debug-ide'
+gem 'debase'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
