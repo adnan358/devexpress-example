@@ -23,6 +23,11 @@ end
 
 gem 'jquery-rails'
 gem 'faker', '~> 1.6', '>= 1.6.6'
+
+# Docker Debugger
+gem 'ruby-debug-ide'
+gem 'debase'
+
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 

@@ -38,6 +38,9 @@ GEM
       execjs
     coffee-script-source (1.12.2)
     concurrent-ruby (1.1.6)
+    debase (0.2.4.1)
+      debase-ruby_core_source (>= 0.10.2)
+    debase-ruby_core_source (0.10.9)
     erubis (2.7.0)
     execjs (2.7.0)
     faker (1.9.6)
@@ -58,6 +61,8 @@ GEM
     mime-types (1.25.1)
     multi_json (1.14.1)
     mysql2 (0.3.21)
+    polyamorous (0.5.0)
+      activerecord (~> 3.0)
     polyglot (0.3.5)
     rack (1.4.7)
     rack-cache (1.11.1)
@@ -82,11 +87,17 @@ GEM
       rdoc (~> 3.4)
       thor (~> 0.14.6)
     rake (13.0.1)
+    ransack (0.6.0)
+      actionpack (~> 3.0)
+      activerecord (~> 3.0)
+      polyamorous (~> 0.5.0)
     rb-fsevent (0.10.4)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
     rdoc (3.12.2)
       json (~> 1.4)
+    ruby-debug-ide (0.7.2)
+      rake (>= 0.8.1)
     sass (3.7.4)
       sass-listen (~> 4.0.0)
     sass-listen (4.0.0)
@@ -114,10 +125,13 @@ PLATFORMS
 
 DEPENDENCIES
   coffee-rails (~> 3.2.1)
+  debase
   faker (~> 1.6, >= 1.6.6)
   jquery-rails
   mysql2 (~> 0.3.10)
   rails (= 3.2.3)
+  ransack (~> 0.6.0)
+  ruby-debug-ide
   sass-rails (~> 3.2.3)
   uglifier (>= 1.0.3)
 
