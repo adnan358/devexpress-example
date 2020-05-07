@@ -66,3 +66,6 @@ yarn-debug.log*
 /storage/*
 !/storage/.keep
 *.iml
+*.xml
+/.idea/.generators
+/.idea/demo_table.iml
