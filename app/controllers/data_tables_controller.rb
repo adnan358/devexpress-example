@@ -1,7 +1,7 @@
 class DataTablesController < ApplicationController
   # GET /data_tables
   # GET /data_tables.json
-  before_filter :prepare_data
+
 
   def index
     @data_tables = DataTable.all
@@ -84,7 +84,8 @@ class DataTablesController < ApplicationController
   end
 
   def prepare_data
-    data_table = DataTable.all
+    @search = DataTable.ransack(id_in: 3..5)
+    data_table = @search.result
     @table_hash = []
     data_table.each do |d|
       @table_hash.push({
