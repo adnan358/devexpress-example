@@ -25,8 +25,8 @@ gem 'jquery-rails'
 gem 'faker', '~> 1.6', '>= 1.6.6'
 
 # Docker Debugger
-gem 'ruby-debug-ide'
-gem 'debase'
+gem 'ruby-debug-ide' if ENV['IS_DOCKER'].present?
+gem 'debase' if ENV['IS_DOCKER'].present?
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
