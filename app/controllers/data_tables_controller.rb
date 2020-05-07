@@ -86,19 +86,21 @@ class DataTablesController < ApplicationController
   def prepare_data
     @table_hash = {}
 
+    page = params[:skip].to_i == 0 ? 1 : (params[:skip].to_i / params[:take].to_i) + 1
+
     @search = DataTable.ransack
-    data_table = @search.result.paginate(page: params[:skip].to_i + 1, per_page: params[:take])
+    data_table = @search.result.paginate(page: page, per_page: params[:take].to_i)
 
     hash = []
     data_table.each do |d|
       hash.push({
          "id" => d.id,
-         "FirstName" => "#{d.first_name}",
-         "LastName" => "#{d.last_name}",
-         "Age" => d.age,
-         "Position" => "#{d.position}",
-         "StartingWork" => "#{d.starting_work}",
-         "Salary" => d.salary
+         "first_name" => "#{d.first_name}",
+         "last_name" => "#{d.last_name}",
+         "age" => d.age,
+         "position" => "#{d.position}",
+         "starting_work" => "#{d.starting_work}",
+         "salary" => d.salary
      })
     end
 
