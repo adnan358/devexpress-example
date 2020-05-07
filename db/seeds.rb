@@ -5,3 +5,16 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+i = 1
+200.times do
+  i = i + 1
+  first_name = Faker::Name.unique.name
+  last_name = Faker::Name.unique.name
+  age = rand(18..70)
+  position = Faker::Company.industry
+  starting_work = Faker::Date.between(2.months.ago, Date.today)
+  salary = rand(2000..5000)
+
+  DataTable::create(first_name: first_name, last_name: last_name, age: age, position: position, starting_work: starting_work, salary: salary)
+  puts "% #{(i/2).to_i} \n"
+end
