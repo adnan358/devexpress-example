@@ -42,15 +42,13 @@ class DataTablesController < ApplicationController
   # POST /data_tables
   # POST /data_tables.json
   def create
-    @data_table = DataTable.new(params[:data_table])
+    data_table = DataTable.new(params[:data_table])
 
     respond_to do |format|
-      if @data_table.save
-        format.html { redirect_to @data_table, notice: 'Data table was successfully created.' }
-        format.json { render json: @data_table, status: :created, location: @data_table }
+      if data_table.save
+        format.json { render json: response_hash(data_table), status: :created }
       else
-        format.html { render action: "new" }
-        format.json { render json: @data_table.errors, status: :unprocessable_entity }
+        format.json { render json: data_table.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -58,15 +56,13 @@ class DataTablesController < ApplicationController
   # PUT /data_tables/1
   # PUT /data_tables/1.json
   def update
-    @data_table = DataTable.find(params[:id])
+    data_table = DataTable.find(params[:id])
 
     respond_to do |format|
-      if @data_table.update_attributes(params[:data_table])
-        format.html { redirect_to @data_table, notice: 'Data table was successfully updated.' }
-        format.json { head :no_content }
+      if data_table.update_attributes(params[:data_table])
+        format.json { render json: response_hash(data_table) }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @data_table.errors, status: :unprocessable_entity }
+        format.json { render json: data_table.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -78,7 +74,7 @@ class DataTablesController < ApplicationController
     data_table.destroy
 
     respond_to do |format|
-      format.json { render json: {:data => ""} }
+      format.json { render json: response_hash }
     end
   end
 
@@ -87,9 +83,9 @@ class DataTablesController < ApplicationController
     @search = DataTable.ransack(@filter)
     data_table = @search.result.paginate(page: @page, per_page: @per_page)
 
-    hash = []
+    data = []
     data_table.each do |d|
-      hash.push({
+      data.push({
          "id" => d.id,
          "first_name" => d.first_name,
          "last_name" => d.last_name,
@@ -100,13 +96,12 @@ class DataTablesController < ApplicationController
      })
     end
 
-    @table_hash[:data] = hash
     # Devexpress data count for paginate
-    @table_hash[:totalCount] = data_table.count if params[:requireTotalCount].present?
+    total_count = { "totalCount" => data_table.count } if params[:requireTotalCount].present?
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: @table_hash }
+      format.json { render json: response_hash(data, {}, {}, total_count) }
     end
   end
 
@@ -136,6 +131,16 @@ class DataTablesController < ApplicationController
   def create_paginate_variables
     @page = params[:skip].to_i == 0 ? 1 : (params[:skip].to_i / params[:take].to_i) + 1
     @per_page = params[:take].to_i
+  end
+
+  def response_hash(data = {}, success = {}, error = {}, *args)
+    response = {
+        "data" => data,
+        "success" => success,
+        "error" => error
+    }
+    response.merge!(args.first) unless args.compact.blank?
+    response
   end
 
 end

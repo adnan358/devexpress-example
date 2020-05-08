@@ -30,9 +30,9 @@ var store = new DevExpress.data.CustomStore({
         });
     },
 
-    update: function (values) {
-        return sendRequest("/InsertOrder", "POST", {
-            values: JSON.stringify(values)
+    update: function (id, values) {
+        return sendRequest("/data_tables/"+id, "PUT", {
+            data_table: values
         });
     },
 
@@ -326,7 +326,7 @@ function sendRequest(url, method, data) {
     }).done(function (result) {
 
         d.resolve(result.data, {
-            totalCount: result.totalCount || 0,
+            totalCount: result.totalCount,
             summary: result.summary,
             groupCount: result.groupCount
         });
