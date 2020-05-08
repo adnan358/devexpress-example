@@ -1,0 +1,181 @@
+function isNotEmpty(value) {
+    return value !== undefined && value !== null && value !== "";
+}
+var store = new DevExpress.data.CustomStore({
+    key: "id",
+    load: function (loadOptions) {
+        //var deferred = $.Deferred(),
+        args = {};
+        [
+            "skip",
+            "take",
+            "requireTotalCount",
+            "requireGroupCount",
+            "sort",
+            "filter",
+            "totalSummary",
+            "group",
+            "groupSummary"
+        ].forEach(function (i) {
+            if (i in loadOptions && isNotEmpty(loadOptions[i]))
+                args[i] = JSON.stringify(loadOptions[i]);
+        });
+
+        return sendRequest("/data_tables/prepare_data", "GET", args)
+    },
+
+    insert: function (values) {
+        return sendRequest("/data_tables", "POST", {
+            data_table: values
+        });
+    },
+
+    update: function (id, values) {
+        return sendRequest("/data_tables/"+id, "PUT", {
+            data_table: values
+        });
+    },
+
+    remove: function (id) {
+        args = {}
+        return sendRequest("/data_tables/" + id, "DELETE", args);
+    }
+});
+
+var dataGrid = $("#gridContainer").dxDataGrid({
+    dataSource: store,
+    remoteOperations: true,
+    keyExpr: "id",
+    height: 850,
+    paging: {
+        pageSize: 10
+    },
+    pager: {
+        showPageSizeSelector: true,
+        allowedPageSizes: [10, 20, 50],
+        showInfo: true
+    },
+    columnsAutoWidth: true,
+    allowColumnReordering: true,
+    showBorders: true,
+    focusedRowEnabled: true,
+    selection: {
+        mode: "multiple"
+    },
+    filterRow: {
+        visible: true,
+        applyFilter: "auto"
+    },
+    searchPanel: {
+        visible: true,
+        width: 240,
+        placeholder: "Search..."
+    },
+    editing: {
+        refreshMode: "reshape",
+        mode: "cell",
+        allowUpdating: true,
+        allowDeleting: true,
+        allowAdding: true
+    },
+    grouping: {
+        autoExpandAll: true,
+    },
+    groupPanel: {
+        visible: true
+    },
+    /*
+    rowDragging: {
+        allowReordering: true,
+        onReorder: function(e) {
+            var visibleRows = e.component.getVisibleRows(),
+                toIndex = employees.indexOf(visibleRows[e.toIndex].data),
+                fromIndex = employees.indexOf(e.itemData);
+
+            employees.splice(fromIndex, 1);
+            employees.splice(toIndex, 0, e.itemData);
+
+            e.component.refresh();
+        }
+    }, */
+    onSelectionChanged: function (e) {
+        e.component.refresh(true);
+    },
+    columns: [
+        "id",
+        "first_name",
+        "last_name",
+        "age", {
+            dataField: "position",
+            width: 170
+        }, {
+            dataField: "starting_work",
+            dataType: "date"
+        }, {
+            dataField: "salary"
+        }
+    ],
+    summary: {
+        totalItems: [{
+            column: "FirstName",
+            summaryType: "count",
+            displayFormat: "{0} rows"
+        },
+            {
+                name: "SelectedRowsSummary",
+                showInColumn: "Salary",
+                displayFormat: "Sum: {0}",
+                valueFormat: "currency",
+                summaryType: "custom"
+            }],
+        groupItems: [{
+            column: "FirstName",
+            summaryType: "count",
+            displayFormat: "{0} orders",
+        }, {
+            column: "Position",
+            summaryType: "count",
+            displayFormat: "{0} orders",
+        }],
+        calculateCustomSummary: function (options) {
+            if (options.name === "SelectedRowsSummary") {
+                if (options.summaryProcess === "start") {
+                    options.totalValue = 0;
+                }
+                if (options.summaryProcess === "calculate") {
+                    if (options.component.isRowSelected(options.value.id)) {
+                        options.totalValue = options.totalValue + options.value.Salary;
+                    }
+                }
+            }
+        }
+    },
+
+}).dxDataGrid("instance");
+
+/* ------------------------------ */
+
+function sendRequest(url, method, data) {
+    var d = $.Deferred();
+    method = method || "GET";
+
+    $.ajax(url, {
+        method: method || "GET",
+        data: data,
+        dataType: 'json',
+        cache: false,
+        xhrFields: {withCredentials: true}
+    }).done(function (result) {
+
+        d.resolve(result.data, {
+            totalCount: result.totalCount,
+            summary: result.summary,
+            groupCount: result.groupCount
+        });
+
+    }).fail(function (xhr) {
+        d.reject(xhr.responseJSON ? xhr.responseJSON.Message : xhr.statusText);
+    });
+
+    return d.promise();
+}
