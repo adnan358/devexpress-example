@@ -78,6 +78,31 @@ class DataTablesController < ApplicationController
     end
   end
 
+  def prepare_pivot
+    @pivot_hash = {}
+    @search = DataTable.all
+    pivot_table = @search
+
+    pivot = []
+    pivot_table.each do |p|
+      pivot.push({
+          "id" => p.id,
+          "first_name" => p.first_name,
+          "last_name" => p.last_name,
+          "age" => p.age,
+          "position" => p.position,
+          "starting_work" => p.starting_work,
+          "salary" => p.salary
+      })
+    end
+
+   @pivot_hash = pivot
+    respond_to do |format|
+      format.html # index.html.erb
+      format.json { render json: @pivot_hash }
+    end
+  end
+
   def prepare_data
     @table_hash = {}
     @search = DataTable.ransack(@filter)
