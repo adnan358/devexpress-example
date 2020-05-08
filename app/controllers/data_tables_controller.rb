@@ -74,12 +74,11 @@ class DataTablesController < ApplicationController
   # DELETE /data_tables/1
   # DELETE /data_tables/1.json
   def destroy
-    @data_table = DataTable.find(params[:id])
-    @data_table.destroy
+    data_table = DataTable.find(params[:id])
+    data_table.destroy
 
     respond_to do |format|
-      format.html { redirect_to data_tables_url }
-      format.json { head :no_content }
+      format.json { render json: {:data => ""} }
     end
   end
 

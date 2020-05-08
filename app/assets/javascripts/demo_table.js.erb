@@ -1,312 +1,339 @@
-  function isNotEmpty(value) {
-      return value !== undefined && value !== null && value !== "";
-  }
-  var store = new DevExpress.data.CustomStore({
-      key: "id",
-      load: function (loadOptions) {
-          var deferred = $.Deferred(),
-              args = {};
-          [
-              "skip",
-              "take",
-              "requireTotalCount",
-              "requireGroupCount",
-              "sort",
-              "filter",
-              "totalSummary",
-              "group",
-              "groupSummary"
-          ].forEach(function(i) {
-              if (i in loadOptions && isNotEmpty(loadOptions[i]))
-                  args[i] = JSON.stringify(loadOptions[i]);
-          });
+function isNotEmpty(value) {
+    return value !== undefined && value !== null && value !== "";
+}
+var store = new DevExpress.data.CustomStore({
+    key: "id",
+    load: function (loadOptions) {
+        //var deferred = $.Deferred(),
+        args = {};
+        [
+            "skip",
+            "take",
+            "requireTotalCount",
+            "requireGroupCount",
+            "sort",
+            "filter",
+            "totalSummary",
+            "group",
+            "groupSummary"
+        ].forEach(function (i) {
+            if (i in loadOptions && isNotEmpty(loadOptions[i]))
+                args[i] = JSON.stringify(loadOptions[i]);
+        });
 
-          $.ajax({
-              url: "/data_tables/prepare_data",
-              dataType: "json",
-              data: args,
-              success: function(result) {
-                  deferred.resolve(result.data, {
-                      totalCount: result.totalCount,
-                      summary: result.summary,
-                      groupCount: result.groupCount
-                  });
-              },
-              error: function() {
-                  deferred.reject("Data Loading Error");
-              },
-              timeout: 5000
-          });
+        return sendRequest("/data_tables/prepare_data", "GET", args)
+    },
 
-          return deferred.promise();
-      }
-  });
+    insert: function (values) {
+        return sendRequest(URL + "/InsertOrder", "POST", {
+            values: JSON.stringify(values)
+        });
+    },
 
-    var dataGrid = $("#gridContainer").dxDataGrid({
-        dataSource: store,
-        remoteOperations: true,
-        keyExpr: "id",
-        height: 850,
-        paging: {
-            pageSize: 10
-        },
-        pager: {
-            showPageSizeSelector: true,
-            allowedPageSizes: [10, 20, 50],
-            showInfo: true
-        },
-        columnsAutoWidth: true,
-        allowColumnReordering: true,
-        showBorders: true,
-        focusedRowEnabled: true,
-        selection: {
-            mode: "multiple"
-        },
-        filterRow: {
-            visible: true,
-            applyFilter: "auto"
-        },
-        searchPanel: {
-            visible: true,
-            width: 240,
-            placeholder: "Search..."
-        },
-        editing: {
-            mode: "cell",
-            allowUpdating: true
-        },
-        grouping: {
-            autoExpandAll: true,
-        },
-        groupPanel: {
-            visible: true
-        },
-        /*
-        rowDragging: {
-            allowReordering: true,
-            onReorder: function(e) {
-                var visibleRows = e.component.getVisibleRows(),
-                    toIndex = employees.indexOf(visibleRows[e.toIndex].data),
-                    fromIndex = employees.indexOf(e.itemData);
+    update: function (values) {
+        return sendRequest(URL + "/InsertOrder", "POST", {
+            values: JSON.stringify(values)
+        });
+    },
 
-                employees.splice(fromIndex, 1);
-                employees.splice(toIndex, 0, e.itemData);
+    remove: function (id) {
+        args = {}
+        return sendRequest("/data_tables/" + id, "DELETE", args);
+    }
+});
 
-                e.component.refresh();
-            }
-        }, */
-        onSelectionChanged: function(e) {
-            e.component.refresh(true);
+var dataGrid = $("#gridContainer").dxDataGrid({
+    dataSource: store,
+    remoteOperations: true,
+    keyExpr: "id",
+    height: 850,
+    paging: {
+        pageSize: 10
+    },
+    pager: {
+        showPageSizeSelector: true,
+        allowedPageSizes: [10, 20, 50],
+        showInfo: true
+    },
+    columnsAutoWidth: true,
+    allowColumnReordering: true,
+    showBorders: true,
+    focusedRowEnabled: true,
+    selection: {
+        mode: "multiple"
+    },
+    filterRow: {
+        visible: true,
+        applyFilter: "auto"
+    },
+    searchPanel: {
+        visible: true,
+        width: 240,
+        placeholder: "Search..."
+    },
+    editing: {
+        refreshMode: "reshape",
+        mode: "cell",
+        allowUpdating: true,
+        allowDeleting: true,
+        allowAdding: true
+    },
+    grouping: {
+        autoExpandAll: true,
+    },
+    groupPanel: {
+        visible: true
+    },
+    /*
+    rowDragging: {
+        allowReordering: true,
+        onReorder: function(e) {
+            var visibleRows = e.component.getVisibleRows(),
+                toIndex = employees.indexOf(visibleRows[e.toIndex].data),
+                fromIndex = employees.indexOf(e.itemData);
+
+            employees.splice(fromIndex, 1);
+            employees.splice(toIndex, 0, e.itemData);
+
+            e.component.refresh();
+        }
+    }, */
+    onSelectionChanged: function (e) {
+        e.component.refresh(true);
+    },
+    columns: [
+        "id",
+        "first_name",
+        "last_name",
+        "age", {
+            dataField: "position",
+            width: 170
+        }, {
+            dataField: "starting_work",
+            dataType: "date"
+        }, {
+            dataField: "salary"
+        }
+    ],
+    summary: {
+        totalItems: [{
+            column: "FirstName",
+            summaryType: "count",
+            displayFormat: "{0} rows"
         },
-        columns: [
-            "id",
-            "first_name",
-            "last_name",
-            "age",{
-                dataField: "position",
-                width: 170
-            }, {
-                dataField: "starting_work",
-                dataType: "date"
-            }, {
-                dataField: "salary"
-            }
-        ],
-        summary: {
-            totalItems: [{
-                column: "FirstName",
-                summaryType: "count",
-                displayFormat: "{0} rows"
-            },
-                {
-                    name: "SelectedRowsSummary",
-                    showInColumn: "Salary",
-                    displayFormat: "Sum: {0}",
-                    valueFormat: "currency",
-                    summaryType: "custom"
-                }],
-            groupItems: [{
-                column: "FirstName",
-                summaryType: "count",
-                displayFormat: "{0} orders",
-            }, {
-                column: "Position",
-                summaryType: "count",
-                displayFormat: "{0} orders",
+            {
+                name: "SelectedRowsSummary",
+                showInColumn: "Salary",
+                displayFormat: "Sum: {0}",
+                valueFormat: "currency",
+                summaryType: "custom"
             }],
-            calculateCustomSummary: function (options) {
-                if (options.name === "SelectedRowsSummary") {
-                    if (options.summaryProcess === "start") {
-                        options.totalValue = 0;
-                    }
-                    if (options.summaryProcess === "calculate") {
-                        if (options.component.isRowSelected(options.value.id)) {
-                            options.totalValue = options.totalValue + options.value.Salary;
-                        }
+        groupItems: [{
+            column: "FirstName",
+            summaryType: "count",
+            displayFormat: "{0} orders",
+        }, {
+            column: "Position",
+            summaryType: "count",
+            displayFormat: "{0} orders",
+        }],
+        calculateCustomSummary: function (options) {
+            if (options.name === "SelectedRowsSummary") {
+                if (options.summaryProcess === "start") {
+                    options.totalValue = 0;
+                }
+                if (options.summaryProcess === "calculate") {
+                    if (options.component.isRowSelected(options.value.id)) {
+                        options.totalValue = options.totalValue + options.value.Salary;
                     }
                 }
             }
-        },
-
-    }).dxDataGrid("instance");
-
-    /* ------------------------------ */
-
-    var salesPivotGrid = $("#sales").dxPivotGrid({
-        allowSortingBySummary: true,
-        allowSorting: true,
-        allowFiltering: true,
-        height: 759,
-        showBorders: true,
-        scrolling: {
-            mode: "virtual"
-        },
-        fieldPanel: {
-            showColumnFields: true,
-            showDataFields: true,
-            showFilterFields: true,
-            showRowFields: true,
-            allowFieldDragging: true,
-            visible: true
-        },
-        dataSource: {
-            fields: [{
-                caption: "Position",
-                width: 120,
-                dataField: "Position",
-                area: "row",
-                headerFilter: {
-                    allowSearch: true
-                }
-            }, {
-                dataField: "StartingWork",
-                width: 100,
-                dataType: "StartingWork",
-                area: "column"
-            }, {
-                caption: "Salary",
-                dataField: "Salary",
-                width: 100,
-                dataType: "number",
-                summaryType: "sum",
-                format: "currency",
-                area: "data"
-            }],
-            store: store
-        },
-        fieldChooser: {
-            enabled: false
-        },
-        onContextMenuPreparing: contextMenuPreparing
-    }).dxPivotGrid("instance");
-
-    $("#show-data-fields").dxCheckBox({
-        text: "Show Data Fields",
-        value: true,
-        onValueChanged: function(data) {
-            salesPivotGrid.option("fieldPanel.showDataFields", data.value);
         }
-    });
+    },
 
-    $("#show-row-fields").dxCheckBox({
-        text: "Show Row Fields",
-        value: true,
-        onValueChanged: function(data) {
-            salesPivotGrid.option("fieldPanel.showRowFields", data.value);
-        }
-    });
+}).dxDataGrid("instance");
 
-    $("#show-column-fields").dxCheckBox({
-        text: "Show Column Fields",
-        value: true,
-        onValueChanged: function(data) {
-            salesPivotGrid.option("fieldPanel.showColumnFields", data.value);
-        }
-    });
+/* ------------------------------ */
 
-    $("#show-filter-fields").dxCheckBox({
-        text: "Show Filter Fields",
-        value: true,
-        onValueChanged: function(data) {
-            salesPivotGrid.option("fieldPanel.showFilterFields", data.value);
-        }
-    });
-
-    function contextMenuPreparing(e) {
-        var dataSource = e.component.getDataSource(),
-            sourceField = e.field;
-
-        if (sourceField) {
-            if(!sourceField.groupName || sourceField.groupIndex === 0) {
-                e.items.push({
-                    text: "Hide field",
-                    onItemClick: function () {
-                        var fieldIndex;
-                        if(sourceField.groupName) {
-                            fieldIndex = dataSource.getAreaFields(sourceField.area, true)[sourceField.areaIndex].index;
-                        } else {
-                            fieldIndex = sourceField.index;
-                        }
-
-                        dataSource.field(fieldIndex, {
-                            area: null
-                        });
-                        dataSource.load();
-                    }
-                });
+var salesPivotGrid = $("#sales").dxPivotGrid({
+    allowSortingBySummary: true,
+    allowSorting: true,
+    allowFiltering: true,
+    height: 759,
+    showBorders: true,
+    scrolling: {
+        mode: "virtual"
+    },
+    fieldPanel: {
+        showColumnFields: true,
+        showDataFields: true,
+        showFilterFields: true,
+        showRowFields: true,
+        allowFieldDragging: true,
+        visible: true
+    },
+    dataSource: {
+        fields: [{
+            caption: "Position",
+            width: 120,
+            dataField: "Position",
+            area: "row",
+            headerFilter: {
+                allowSearch: true
             }
+        }, {
+            dataField: "StartingWork",
+            width: 100,
+            dataType: "StartingWork",
+            area: "column"
+        }, {
+            caption: "Salary",
+            dataField: "Salary",
+            width: 100,
+            dataType: "number",
+            summaryType: "sum",
+            format: "currency",
+            area: "data"
+        }],
+        store: store
+    },
+    fieldChooser: {
+        enabled: false
+    },
+    onContextMenuPreparing: contextMenuPreparing
+}).dxPivotGrid("instance");
 
-            if (sourceField.dataType === "number") {
-                var setSummaryType = function (args) {
-                        dataSource.field(sourceField.index, {
-                            summaryType: args.itemData.value
-                        });
+$("#show-data-fields").dxCheckBox({
+    text: "Show Data Fields",
+    value: true,
+    onValueChanged: function (data) {
+        salesPivotGrid.option("fieldPanel.showDataFields", data.value);
+    }
+});
 
-                        dataSource.load();
-                    },
-                    menuItems = [];
+$("#show-row-fields").dxCheckBox({
+    text: "Show Row Fields",
+    value: true,
+    onValueChanged: function (data) {
+        salesPivotGrid.option("fieldPanel.showRowFields", data.value);
+    }
+});
 
-                e.items.push({ text: "Summary Type", items: menuItems });
+$("#show-column-fields").dxCheckBox({
+    text: "Show Column Fields",
+    value: true,
+    onValueChanged: function (data) {
+        salesPivotGrid.option("fieldPanel.showColumnFields", data.value);
+    }
+});
 
-                $.each(["Sum", "Avg", "Min", "Max"], function(_, summaryType) {
-                    var summaryTypeValue = summaryType.toLowerCase();
+$("#show-filter-fields").dxCheckBox({
+    text: "Show Filter Fields",
+    value: true,
+    onValueChanged: function (data) {
+        salesPivotGrid.option("fieldPanel.showFilterFields", data.value);
+    }
+});
 
-                    menuItems.push({
-                        text: summaryType,
-                        value: summaryType.toLowerCase(),
-                        onItemClick: setSummaryType,
-                        selected: e.field.summaryType === summaryTypeValue
+function contextMenuPreparing(e) {
+    var dataSource = e.component.getDataSource(),
+        sourceField = e.field;
+
+    if (sourceField) {
+        if (!sourceField.groupName || sourceField.groupIndex === 0) {
+            e.items.push({
+                text: "Hide field",
+                onItemClick: function () {
+                    var fieldIndex;
+                    if (sourceField.groupName) {
+                        fieldIndex = dataSource.getAreaFields(sourceField.area, true)[sourceField.areaIndex].index;
+                    } else {
+                        fieldIndex = sourceField.index;
+                    }
+
+                    dataSource.field(fieldIndex, {
+                        area: null
                     });
+                    dataSource.load();
+                }
+            });
+        }
+
+        if (sourceField.dataType === "number") {
+            var setSummaryType = function (args) {
+                    dataSource.field(sourceField.index, {
+                        summaryType: args.itemData.value
+                    });
+
+                    dataSource.load();
+                },
+                menuItems = [];
+
+            e.items.push({text: "Summary Type", items: menuItems});
+
+            $.each(["Sum", "Avg", "Min", "Max"], function (_, summaryType) {
+                var summaryTypeValue = summaryType.toLowerCase();
+
+                menuItems.push({
+                    text: summaryType,
+                    value: summaryType.toLowerCase(),
+                    onItemClick: setSummaryType,
+                    selected: e.field.summaryType === summaryTypeValue
                 });
-            }
+            });
         }
     }
-    var pivotModeRadio = $("#pivot-mode-radio").dxCheckBox({
-        text: "Pivot Mode",
-        value: true,
-        onValueChanged: function(data) {
-            var pivotgrid = document.getElementById("sales");
-            var datagrid = document.getElementById("data-grid-demo");
+}
+var pivotModeRadio = $("#pivot-mode-radio").dxCheckBox({
+    text: "Pivot Mode",
+    value: true,
+    onValueChanged: function (data) {
+        var pivotgrid = document.getElementById("sales");
+        var datagrid = document.getElementById("data-grid-demo");
 
-            if (data.value == true){
-                pivotgrid.style.display = "block";
-                datagrid.style.display = "none";
-            }
-            else {
-                datagrid.style.display = "block";
-                pivotgrid.style.display = "none";
-            }
+        if (data.value == true) {
+            pivotgrid.style.display = "block";
+            datagrid.style.display = "none";
+        } else {
+            datagrid.style.display = "block";
+            pivotgrid.style.display = "none";
         }
-    }).dxCheckBox("instance");;
-    var salesFieldChooser = $("#sales-fieldchooser").dxPivotGridFieldChooser({
-        dataSource: salesPivotGrid.getDataSource(),
-        texts: {
-            allFields: "All",
-            columnFields: "Columns",
-            dataFields: "Data",
-            rowFields: "Rows",
-            filterFields: "Filter"
-        },
-        height: 685,
-        layout: 1
-    }).dxPivotGridFieldChooser("instance");
+    }
+}).dxCheckBox("instance");;
+var salesFieldChooser = $("#sales-fieldchooser").dxPivotGridFieldChooser({
+    dataSource: salesPivotGrid.getDataSource(),
+    texts: {
+        allFields: "All",
+        columnFields: "Columns",
+        dataFields: "Data",
+        rowFields: "Rows",
+        filterFields: "Filter"
+    },
+    height: 685,
+    layout: 1
+}).dxPivotGridFieldChooser("instance");
+
+function sendRequest(url, method, data) {
+    var d = $.Deferred();
+    method = method || "GET";
+
+    $.ajax(url, {
+        method: method || "GET",
+        data: data,
+        dataType: 'json',
+        cache: false,
+        xhrFields: {withCredentials: true}
+    }).done(function (result) {
+
+        d.resolve(result.data, {
+            totalCount: result.totalCount || 0,
+            summary: result.summary,
+            groupCount: result.groupCount
+        });
+
+    }).fail(function (xhr) {
+        d.reject(xhr.responseJSON ? xhr.responseJSON.Message : xhr.statusText);
+    });
+
+    return d.promise();
+}
