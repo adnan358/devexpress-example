@@ -1,5 +1,5 @@
 class DataTablesController < ApplicationController
-  before_filter :prepare_filter_query, :create_paginate_variables, :only => :prepare_data
+  before_filter :prepare_filter_query, :create_paginate_variables, :prepare_filter_sort_array, :only => :prepare_data
 
   # GET /data_tables
   # GET /data_tables.json
@@ -81,6 +81,7 @@ class DataTablesController < ApplicationController
   def prepare_data
     @table_hash = {}
     @search = DataTable.ransack(@filter)
+    @search.sorts = @sort
     data_table = @search.result.paginate(page: @page, per_page: @per_page)
 
     data = []
@@ -126,6 +127,14 @@ class DataTablesController < ApplicationController
       @filter[matcher] = find_search
     end
 
+  end
+
+  def prepare_filter_sort_array
+    @sort = []
+    (JSON::parse(params[:sort]) rescue []).each do |value|
+      sort_val = value["selector"] + " " + (value["desc"] ? "desc" : "asc")
+      @sort.push(sort_val)
+    end
   end
 
   def create_paginate_variables
