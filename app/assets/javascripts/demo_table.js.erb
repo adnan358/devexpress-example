@@ -25,13 +25,13 @@ var store = new DevExpress.data.CustomStore({
     },
 
     insert: function (values) {
-        return sendRequest(URL + "/InsertOrder", "POST", {
-            values: JSON.stringify(values)
+        return sendRequest("/data_tables", "POST", {
+            data_table: values
         });
     },
 
     update: function (values) {
-        return sendRequest(URL + "/InsertOrder", "POST", {
+        return sendRequest("/InsertOrder", "POST", {
             values: JSON.stringify(values)
         });
     },
