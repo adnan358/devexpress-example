@@ -1,8 +1,8 @@
 class DataTablesController < ApplicationController
+  before_filter :prepare_filter_query, :create_paginate_variables, :only => :prepare_data
+
   # GET /data_tables
   # GET /data_tables.json
-
-
   def index
     @data_tables = DataTable.all
 
@@ -85,32 +85,58 @@ class DataTablesController < ApplicationController
 
   def prepare_data
     @table_hash = {}
-
-    page = params[:skip].to_i == 0 ? 1 : (params[:skip].to_i / params[:take].to_i) + 1
-
-    @search = DataTable.ransack
-    data_table = @search.result.paginate(page: page, per_page: params[:take].to_i)
+    @search = DataTable.ransack(@filter)
+    data_table = @search.result.paginate(page: @page, per_page: @per_page)
 
     hash = []
     data_table.each do |d|
       hash.push({
          "id" => d.id,
-         "first_name" => "#{d.first_name}",
-         "last_name" => "#{d.last_name}",
+         "first_name" => d.first_name,
+         "last_name" => d.last_name,
          "age" => d.age,
-         "position" => "#{d.position}",
-         "starting_work" => "#{d.starting_work}",
+         "position" => d.position,
+         "starting_work" => d.starting_work,
          "salary" => d.salary
      })
     end
 
     @table_hash[:data] = hash
-    @table_hash[:totalCount] = DataTable.count if params[:requireTotalCount].present?
+    # Devexpress data count for paginate
+    @table_hash[:totalCount] = data_table.count if params[:requireTotalCount].present?
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: @table_hash }
     end
+  end
+
+  private
+
+  def prepare_filter_query
+    matcher = ""
+    find_search = ""
+    @filter = {}
+
+    (JSON::parse(params[:filter]) rescue []).each do |value|
+      if value.kind_of?(Array)
+        matcher += value.first + "_" rescue next
+        find_search = value.last
+      else
+        matcher += value + "_" rescue next
+      end
+    end
+
+    unless matcher.blank?
+      matcher += "cont"
+      @filter[matcher] = find_search
+    end
+
+  end
+
+  def create_paginate_variables
+    @page = params[:skip].to_i == 0 ? 1 : (params[:skip].to_i / params[:take].to_i) + 1
+    @per_page = params[:take].to_i
   end
 
 end
