@@ -99,10 +99,11 @@ class DataTablesController < ApplicationController
 
     # Devexpress data count for paginate
     total_count = { "totalCount" => data_table.count } if params[:requireTotalCount].present?
+    summary = { "summary" => [data_table.count, data_table.sum(:salary)] }
 
     respond_to do |format|
       format.html # index.html.erb
-      format.json { render json: response_hash(data, {}, {}, total_count) }
+      format.json { render json: response_hash(data, {}, {}, total_count, summary) }
     end
   end
 
@@ -148,7 +149,10 @@ class DataTablesController < ApplicationController
         "success" => success,
         "error" => error
     }
-    response.merge!(args.first) unless args.compact.blank?
+    args.compact.each do |arg|
+      response.merge!(arg)
+    end
+
     response
   end
 

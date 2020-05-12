@@ -117,23 +117,24 @@ var dataGrid = $("#gridContainer").dxDataGrid({
     ],
     summary: {
         totalItems: [{
-            column: "FirstName",
+            column: "first_name",
             summaryType: "count",
             displayFormat: "{0} rows"
         },
             {
                 name: "SelectedRowsSummary",
                 showInColumn: "Salary",
+                column: "salary",
                 displayFormat: "Sum: {0}",
                 valueFormat: "currency",
-                summaryType: "custom"
+                summaryType: "sum"
             }],
         groupItems: [{
-            column: "FirstName",
+            column: "first_name",
             summaryType: "count",
             displayFormat: "{0} orders",
         }, {
-            column: "Position",
+            column: "position",
             summaryType: "count",
             displayFormat: "{0} orders",
         }],
