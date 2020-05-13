@@ -73,10 +73,24 @@ var dataGrid = $("#gridContainer").dxDataGrid({
     },
     editing: {
         refreshMode: "reshape",
-        mode: "cell",
+        mode: "popup",
         allowUpdating: true,
         allowDeleting: true,
-        allowAdding: true
+        allowAdding: true,
+        popup: {
+            title: "Kişi Bilgisi",
+            showTitle: true,
+            width: 700,
+            height: 525,
+            position: {
+                my: "top",
+                at: "top",
+                of: window
+            }
+        },
+        form: {
+            items: personel_edit
+        }
     },
     grouping: {
         autoExpandAll: true,
@@ -151,6 +165,12 @@ var dataGrid = $("#gridContainer").dxDataGrid({
             }
         }
     },
+    onEditorPrepared: function(options) {
+        if(options.parentType === "dataRow" && options.dataField === "id") {
+            debugger
+          options.editorOptions.disabled = true;
+        }
+    }
 
 }).dxDataGrid("instance");
 

@@ -1,0 +1,19 @@
+var personel_edit = [{
+    itemType: "group",
+        colCount: 2,
+    colSpan: 2,
+    items: ["first_name", "last_name", "starting_work", "position", "age", {
+        dataField: "Notes",
+        editorType: "dxTextArea",
+        colSpan: 2,
+        editorOptions: {
+            height: 100
+        }
+    }]
+}, {
+    itemType: "group",
+        colCount: 2,
+        colSpan: 2,
+        caption: "Home Address",
+        items: ["StateID", "Address"]
+}];
