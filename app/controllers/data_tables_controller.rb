@@ -88,7 +88,7 @@ class DataTablesController < ApplicationController
 
   def prepare_pivot
     @pivot_hash = {}
-    @search = DataTable.all
+    @search = DataTable.limit(100)
     pivot_table = @search
 
     pivot = []
