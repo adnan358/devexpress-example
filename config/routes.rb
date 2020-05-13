@@ -1,6 +1,9 @@
 DemoTable::Application.routes.draw do
   resources :data_tables do
-    get :prepare_data, on: :collection
+    collection do
+      get :prepare_data
+      delete 'bulk_delete', action: :bulk_delete
+    end
   end
   # The priority is based upon order of creation:
   # first created -> highest priority.

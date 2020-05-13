@@ -78,6 +78,14 @@ class DataTablesController < ApplicationController
     end
   end
 
+  def bulk_delete
+    DataTable.where(id: params[:ids]).delete_all
+
+    respond_to do |format|
+      format.json { render json: response_hash }
+    end
+  end
+
   def prepare_data
     @table_hash = {}
     @search = DataTable.ransack(@filter)
