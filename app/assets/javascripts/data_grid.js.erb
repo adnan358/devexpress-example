@@ -156,7 +156,8 @@ var dataGrid = $("#gridContainer").dxDataGrid({
 
 /* ------------------------------ */
 
-function sendRequest(url, method, data) {
+function sendRequest(url, method, data, callback) {
+    callback = callback || function(){};
     var d = $.Deferred();
     method = method || "GET";
 
@@ -174,6 +175,7 @@ function sendRequest(url, method, data) {
             groupCount: result.groupCount
         });
 
+        callback();
     }).fail(function (xhr) {
         d.reject(xhr.responseJSON ? xhr.responseJSON.Message : xhr.statusText);
     });
