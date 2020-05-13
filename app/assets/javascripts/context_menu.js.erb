@@ -1,0 +1,36 @@
+contextMenuItems = [
+    {
+        "text": "Düzenle"
+    },
+    {
+        "text": "Sil"
+    },
+    {
+        "text": "Clipboard",
+        "items": [
+            {
+                "text": "Çoğalt"
+            }
+        ]
+    }
+]
+
+$(function(){
+    var context_menu = $("#context-menu").dxContextMenu({
+        dataSource: contextMenuItems,
+        width: 200,
+        target: "#gridContainer",
+        onItemClick: function(e){
+            if (!e.itemData.items) {
+                if(e.itemData.text == "Sil") {
+                    
+                    var keys = dataGrid.getSelectedRowKeys();
+                    sendRequest("/data_tables/bulk_delete", "DELETE", {ids: keys}, function(){
+                        dataGrid.refresh(false);
+                    });
+                }
+                DevExpress.ui.notify("The \"" + e.itemData.text + "\" item was clicked", "success", 1500);
+            }
+        }
+    });
+});
