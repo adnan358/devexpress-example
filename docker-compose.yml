@@ -16,6 +16,7 @@ services:
     environment:
       RAILS_ENV: development
       DATABASE_HOST: db
+      IS_DOCKER: 1
     volumes:
       - .:/myapp
     ports:
