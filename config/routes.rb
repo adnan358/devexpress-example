@@ -3,6 +3,7 @@ DemoTable::Application.routes.draw do
   
     collection do
       get :prepare_data
+      get :proxy
       delete 'bulk_delete', action: :bulk_delete
     end
     

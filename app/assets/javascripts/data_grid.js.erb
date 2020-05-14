@@ -55,6 +55,20 @@ var dataGrid = $("#gridContainer").dxDataGrid({
         allowedPageSizes: [10, 20, 50],
         showInfo: true
     },
+    export: {
+        enabled: true,
+        allowExportSelectedData: true,
+        proxyUrl: "/data_tables/proxy"
+    },
+    stateStoring: {
+        enabled: true,
+        type: "localStorage",
+        storageKey: "storage",
+        customSave: function (state) {
+            console.log(state);
+        }
+    },
+    onExporting: export_function,
     columnsAutoWidth: true,
     allowColumnReordering: true,
     showBorders: true,

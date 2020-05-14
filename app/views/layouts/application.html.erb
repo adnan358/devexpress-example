@@ -8,6 +8,9 @@
   <%= stylesheet_link_tag    "application", :media => "all" %>
   <%= javascript_include_tag "application" %>
   <%= javascript_include_tag "https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" %>
+  <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/exceljs/3.3.1/exceljs.min.js" %>
+  <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/1.3.8/FileSaver.min.js" %>
+  <%= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js" %>
   <script>window.jQuery || document.write(decodeURIComponent('%3Cscript src="js/jquery.min.js"%3E%3C/script%3E'))</script>
   <%= stylesheet_link_tag    "https://cdn3.devexpress.com/jslib/19.2.7/css/dx.common.css", :media => "all" %>
   <%= stylesheet_link_tag    "https://cdn3.devexpress.com/jslib/19.2.7/css/dx.light.css", :media => "all" %>
@@ -22,6 +25,7 @@
 <%= yield %>
 
 <%= javascript_include_tag "form/edit.js" %>
+<%= javascript_include_tag "excel/excel.js" %>
 <%= javascript_include_tag "data_grid.js" %>
 <%= javascript_include_tag "pivot_grid.js" %>
 <%= javascript_include_tag "context_menu.js" %>

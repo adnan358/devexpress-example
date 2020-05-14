@@ -140,6 +140,10 @@ class DataTablesController < ApplicationController
     end
   end
 
+  def proxy
+    puts 'Adnan'
+  end
+
   private
 
   def prepare_filter_query

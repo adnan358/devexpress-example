@@ -23,7 +23,7 @@ $(function(){
         onItemClick: function(e){
             if (!e.itemData.items) {
                 if(e.itemData.text == "Sil") {
-
+                    debugger;
                     var keys = dataGrid.getSelectedRowKeys();
                     sendRequest("/data_tables/bulk_delete", "DELETE", {ids: keys}, function(){
                         dataGrid.refresh(false);
