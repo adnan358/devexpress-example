@@ -20,7 +20,6 @@ var store = new DevExpress.data.CustomStore({
             if (i in loadOptions && isNotEmpty(loadOptions[i]))
                 args[i] = JSON.stringify(loadOptions[i]);
         });
-
         return sendRequest("/data_tables/prepare_data", "GET", args)
     },
 
@@ -70,9 +69,6 @@ var dataGrid = $("#gridContainer").dxDataGrid({
     },
     onExporting: export_function,
     columnsAutoWidth: true,
-    allowColumnReordering: true,
-    showBorders: true,
-    focusedRowEnabled: true,
     selection: {
         mode: "multiple"
     },
@@ -90,44 +86,7 @@ var dataGrid = $("#gridContainer").dxDataGrid({
         mode: "popup",
         allowUpdating: true,
         allowDeleting: true,
-        allowAdding: true,
-        popup: {
-            title: "Kişi Bilgisi",
-            showTitle: true,
-            width: 700,
-            height: 525,
-            position: {
-                my: "top",
-                at: "top",
-                of: window
-            }
-        },
-        form: {
-            items: personel_edit
-        }
-    },
-    grouping: {
-        autoExpandAll: true,
-    },
-    groupPanel: {
-        visible: true
-    },
-    /*
-    rowDragging: {
-        allowReordering: true,
-        onReorder: function(e) {
-            var visibleRows = e.component.getVisibleRows(),
-                toIndex = employees.indexOf(visibleRows[e.toIndex].data),
-                fromIndex = employees.indexOf(e.itemData);
-
-            employees.splice(fromIndex, 1);
-            employees.splice(toIndex, 0, e.itemData);
-
-            e.component.refresh();
-        }
-    }, */
-    onSelectionChanged: function (e) {
-        e.component.refresh(true);
+        allowAdding: true
     },
     columns: [
         "id",
@@ -156,36 +115,11 @@ var dataGrid = $("#gridContainer").dxDataGrid({
                 displayFormat: "Sum: {0}",
                 valueFormat: "currency",
                 summaryType: "sum"
-            }],
-        groupItems: [{
-            column: "first_name",
-            summaryType: "count",
-            displayFormat: "{0} orders",
-        }, {
-            column: "position",
-            summaryType: "count",
-            displayFormat: "{0} orders",
-        }],
-        calculateCustomSummary: function (options) {
-            if (options.name === "SelectedRowsSummary") {
-                if (options.summaryProcess === "start") {
-                    options.totalValue = 0;
-                }
-                if (options.summaryProcess === "calculate") {
-                    if (options.component.isRowSelected(options.value.id)) {
-                        options.totalValue = options.totalValue + options.value.Salary;
-                    }
-                }
-            }
-        }
+            }]
     },
-    onEditorPrepared: function(options) {
-        if(options.parentType === "dataRow" && options.dataField === "id") {
-            debugger
-          options.editorOptions.disabled = true;
-        }
+    onContextMenuPreparing: function (e) {
+        e.items = contextMenuItemsOdd
     }
-
 }).dxDataGrid("instance");
 
 /* ------------------------------ */
@@ -200,7 +134,23 @@ function sendRequest(url, method, data, callback) {
         data: data,
         dataType: 'json',
         cache: false,
-        xhrFields: {withCredentials: true}
+        xhrFields: {withCredentials: true},
+        beforeSend: function(xhr, settings){
+            // Excel export
+            try {
+              var add = 1;
+              var queryString = decodeURIComponent(settings.url).split("?")[1]
+              $.each(queryString.split("&"),function(key, value){
+                  if(value.split("=")[0] == "skip") {
+                      add--;
+                  }
+              });
+
+              if (add > 0) {
+                settings.url += "&" + $.param({skip: dataGrid.pageIndex() * dataGrid.pageSize(), take:  dataGrid.pageSize() })
+              }
+            } catch (e) {}
+        }
     }).done(function (result) {
 
         d.resolve(result.data, {

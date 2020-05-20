@@ -132,16 +132,12 @@ class DataTablesController < ApplicationController
 
     # Devexpress data count for paginate
     total_count = { "totalCount" => data_table.count } if params[:requireTotalCount].present?
-    summary = { "summary" => [data_table.count, data_table.sum(:salary)] }
+    summary = { "summary" => [data_table.count, (data_table.sum(:salary) rescue DataTable.sum(:salary))] }
 
     respond_to do |format|
       format.html # index.html.erb
       format.json { render json: response_hash(data, {}, {}, total_count, summary) }
     end
-  end
-
-  def proxy
-    puts 'Adnan'
   end
 
   private
