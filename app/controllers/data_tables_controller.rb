@@ -131,7 +131,7 @@ class DataTablesController < ApplicationController
     end
 
     # Devexpress data count for paginate
-    total_count = { "totalCount" => data_table.count } if params[:requireTotalCount].present?
+    total_count = { "totalCount" => data_table.count } # if params[:requireTotalCount].present?
     summary = { "summary" => [data_table.count, (data_table.sum(:salary) rescue DataTable.sum(:salary))] }
 
     respond_to do |format|
